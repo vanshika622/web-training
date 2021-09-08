@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="./assests/css/cart.css">
+    <title>Cart Page</title>
+</head>
+
+<body onload="populatecart()">
+    <div class="container-fluid">
+        <div class="row colour">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="col-lg-5 col-md-5 col-sm-12">
+                                Avail 10% Off on Your first Purchase. Use Code: FS10
+                            </div>
+                            <div class="col-7">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 ">
+                                        <div class="row">
+                                            <div class="col-5 d-flex justify-content-center align-items-center">Login
+                                            </div>
+                                            <div class="col-5 d-flex justify-content-center align-items-center">Register
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8 col-md-6 ">
+                                        <div class="row justify-content-end">
+                                            <!-- doubt why we use span tag here -->
+                                            <div class="col-2  "><i class="fas fa-heart top-bar-icon">
+                                                    <span>0</span></i></div>
+                                            <div class="col-2 "><i class="fas fa-shopping-bag top-bar-icon"><span
+                                                        id="cart-item-total">0</span></i></div>
+                                            <div class="col-2 ">IND</div>
+                                            <div class="col-2 ">US</div>
+                                            <div class="col-2 ">UAF</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- navbar starts here -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="./"><a class="navbar-brand" href="#">
+                        <img src="./assests/imgs/logo.png" alt="" width="100" height="70">
+                    </a>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-flex col-10 " id="navbarSupportedContent">
+                    <ul class="navbar-nav m-auto  mb-lg-50 d-flex justify-content-center align-items-center" id="menu-container" >
+                        <!-- <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">BRAND JOURNEY</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">RUNWAY</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">SHOP</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">INCLUSIVITY</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">UPCYCLED X FS</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">BLOG</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">MEDIA COVERAGE</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">FS CELEBRITIES</a>
+                        </li> -->
+                    </ul>
+                    <form class="formdesign">
+
+                        <div class="input-icons">
+                            <!-- -->
+                            <i class="fas fa-search icon"></i>
+                            <input class="form-control  " type="search" aria-label="Search">
+
+                        </div>
+                     </form>
+                </div>
+            </div>
+        </nav>
+        <!-- nav bar ends here -->
+        <!-- cart page start here -->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    Product Name
+                </div>
+                <div class="col-6 pb-3">
+                    <div class="row justify-content-start align-items-center">
+                        <div class="col-4">Price </div>
+                        <div class="col-4">Qunatity</div>
+                        <div class="col-4">SubTotal</div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+
+            <div class="row" id="cart-details">
+
+            </div>
+            <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 cart-border">
+
+                    <div class="row">
+                        <div class="col cart-total-heading d-flex justify-content-center align-items-center pt-1 pb-1">
+                            Cart Total</div>
+                    </div>
+                    <div class="row pt-2 pb-2 bottom-border">
+                        <div class="col-6 border-right">SubTotal</div>
+                        <div class="col-6 "id="subtotal-amount">63000</div>
+                    </div>
+                    <div class="row pt-2 pb-2 bottom-border">
+                        <div class="col-6 border-right">Shipping</div>
+                        <div class="col-6 ">Add Address</div>
+                    </div>
+                    <div class="row pt-2 pb-2 bottom-border">
+                        <div class="col-6 border-right">Total</div>
+                        <div class="col-6 " id="total-amount">63000</div>
+                    </div>
+                    <div class="row pt-2 pb-2 bottom-border  ">
+                        <div class="col-12 d-flex justify-content-center align-items-center">
+                            <button class="checkout-btn p-2">PROCEED TO CHECKOUT</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <script src="./assests/js/scripts.js"></script>
+
+</body>
+
+</html>
