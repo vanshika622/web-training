@@ -87,7 +87,7 @@ function generatesubmenu(submenuItem) {
 
 }
 function generateMenus() {
-    // debugger;
+    
     let menucontainer = document.getElementById("menu-container")
     let elem = '';
     let i = 0;
@@ -182,9 +182,10 @@ function togglesizeclass(box) {
 
 function generateProducts() {
     getTotalcartItemNumber();
+    
     let productContainer = document.getElementById("products-container");
     let elem = '';
-    // debugger;
+    
     products.forEach((product, index) => {
         const { image, name, price, description } = product;
        
@@ -210,7 +211,7 @@ function generateProducts() {
 }
 // wishlistfunction
 function checkwishlist(name){
-    debugger;
+    
     const { productname, productimage, productprice, productdescription } = getproductdetailsfromsessionstorage();
     let wishlisticon=document.getElementById("icon-container-heart")
     if(inWishlist(name)!=-1){
@@ -261,7 +262,7 @@ function getproductindexfromwishlist(wishlist, productname) {
     })
 }
 function getwishlistitems() {
-    // debugger;
+    
     let wishlist = localStorage?.getItem('wishlist');
     if (wishlist) {
         return JSON.parse(wishlist);
@@ -285,11 +286,11 @@ function saveproducts(name, price, image, description) {
 //    FUNCTIONALITY FOR PRODUCTDETAILS PAGE
 // get the content from local storage and set into productdetails1.html page
 function loadproductdetails() {
-    // debugger;
+    
     generateSizeListBoxes();
     getTotalcartItemNumber();
     // reterive the data from local storage
-    // debugger
+    
     const productname = localStorage?.getItem("productname");
     const productprice = localStorage?.getItem("productprice");
     const productimage = localStorage?.getItem("productimage");
@@ -364,6 +365,7 @@ function getproductdetailsfromsessionstorage() {
 // }
 //  FUCNCTION TO GETTHE TOTAOL NUMBEROF ITEM IN CART TO POPULATE ON CART ICON OF EVERY PAGE
 function getTotalcartItemNumber() {
+    
     generateMenus();
 
     let cart = localStorage.getItem('cart');
@@ -479,7 +481,7 @@ function setcarttolocalstorage(cart){
     localStorage.setItem('cart',JSON.stringify(cart))
 }
 function deleteitemfromcart(productname){
-    //   debugger; 
+    
  let cart= getcartitems();
  
   let productIndex=getproductindexfromcart(cart,productname);
@@ -489,3 +491,8 @@ function deleteitemfromcart(productname){
 
 
 }
+
+
+// ERRORS
+// CLICKING ON HEART ICON ON PRODUCTDETAIL PAGE THEN SYNTAXERROR IS COMING
+// GETTOTALITEMCART FUCTION CALLED IN GENERATEPRODUCT FUNCTION GIVE THE TYPEERROR
