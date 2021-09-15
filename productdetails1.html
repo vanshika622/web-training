@@ -15,6 +15,10 @@
 </head>
 
 <body onload="loadproductdetails()">
+  <div class="notification-container" id="notification-container">
+    <div class="close-button"  onclick="closenotification()">X</div>
+    <div class="info" id="info-container">Product has been added to wishlist</div>
+  </div>
   <div class="container-fluid">
     <div class="row colour">
       <div class="container">
@@ -36,7 +40,7 @@
                     <div class="row justify-content-end">
                       <!-- doubt why we use span tag here -->
                       <div class="col-2  "><i class="fas fa-heart top-bar-icon"> <span>0</span></i></div>
-                      <div class="col-2 "><i class="fas fa-shopping-bag top-bar-icon"><span id="cart-item-total">0</span></i></div>
+                      <div class="col-2 "><i class="fas fa-shopping-bag top-bar-icon"><span id="cart-item-total" onclick="window.location='./cart.html'">0</span></i></div>
                       <div class="col-2 ">IND</div>
                       <div class="col-2 ">US</div>
                       <div class="col-2 ">UAF</div>

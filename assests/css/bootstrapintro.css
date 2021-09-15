@@ -272,3 +272,23 @@
 .like-btn-active{
     color: #f00 !important;
 }
+.notification-container{
+    width:25%;
+    position: fixed;
+    top:0%;
+    right: 0%;
+    box-shadow: 0px 0px 10px #888;
+    z-index: 11111;
+    background: #fff;
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+}
+.close-button{
+    position: absolute;
+    right: 3%;
+    top:3%;
+    cursor: pointer;
+}

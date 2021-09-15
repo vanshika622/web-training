@@ -7,7 +7,7 @@ const products = [{
 },
 {
     "image": "./assests/imgs/top-2image.jpg",
-    "name": "Canary yellow seahorse blazer",
+    "name": "seahorse blazer",
     "price": "18000",
     "description": "here is the description of thr product"
 },
@@ -19,7 +19,7 @@ const products = [{
     "description": "here is the description of thr product"
 }, {
     "image": "./assests/imgs/top-6image.jpg",
-    "name": "The quasimodo sleeve bodysuit",
+    "name": "sleeve bodysuit",
 
     "price": " 12000",
     "description": "here is the description of thr product"
@@ -40,6 +40,7 @@ const products = [{
     "description": "here is the description of the product"
 }
 ];
+
 const menus = [
     {
         menuName: 'Home',
@@ -73,21 +74,74 @@ const menus = [
             ]
     }
 
+];
+const sizeList = ['XS', 'S', 'M', 'L', 'XL'];
+let selectedsize = "";
+let notificationcontainer = document.getElementById("notification-container")
+let notificationInfocontainer = document.getElementById("info-container")
+let onload = false;
+let modal = new bootstrap.Modal(document.getElementById('myModal'));
+let shippingformfieds = [
+    {
+        name: 'first Name',
+        key: 'first Name',
+        type: 'text'
+    },
+    {
+        name: 'last Name',
+        key: 'last Name',
+        type: 'text'
+    },
+    {
+        name: 'Email',
+        key: 'email',
+        type: 'email'
+    },
+
+    {
+        name: 'Pincode',
+        key: 'pincode',
+        type: 'number'
+    }
 ]
+let Billingformfieds = [
+    {
+        name: 'first Name',
+        type: 'text'
+    },
+
+    {
+        name: 'Last Name',
+        type: 'text'
+    },
+    {
+        name: 'Email',
+        key: 'email',
+        type: 'email'
+    },
+
+    {
+        name: 'Pincode',
+        key: 'pincode',
+        type: 'number'
+    }
+
+]
+
 function generatesubmenu(submenuItem) {
     var elem = '';
     for (const submenu of submenuItem) {
-       
+
         elem += `  <li><a class="dropdown-item" href="${submenu.link}">${submenu.menuName}</a></li>`
-        
-        
+
+
         elem += ` </li>`
     }
     return elem;
 
 }
 function generateMenus() {
-    
+
     let menucontainer = document.getElementById("menu-container")
     let elem = '';
     let i = 0;
@@ -112,15 +166,15 @@ function generateMenus() {
     }
     menucontainer.innerHTML = elem;
 }
-const sizeList = ['XS', 'S', 'M', 'L', 'XL'];
-let selectedsize = "";
+
+
 // generate size boxes dynamically into productdetail1.html
 function generateSizeListBoxes(sizeName) {
     let sizeboxesContainer = document.getElementById("size-boxes-container");
 
     let elem = '';
     for (const size of sizeList) {
-        elem += `<div class="boxes ${sizeName && sizeName == size ? 'highlight' : ''}" onclick="togglesizeclass(this)">${size}</div>`
+        elem += `<div class="boxes ${sizeName && sizeName.trim() == size.trim() ? 'highlight' : ''}" onclick="togglesizeclass(this)">${size}</div>`
 
     }
     // console.log(elem);
@@ -129,8 +183,9 @@ function generateSizeListBoxes(sizeName) {
 //  FUNCTIONALITY FOR PRODUCTDETAIL.HTML PAGE ONLY
 
 function addToCart() {
+
     const { productname, productimage, productprice, productdescription } = getproductdetailsfromsessionstorage();
-           
+
     //  qunatity selected by user
     const quantity = document.getElementById('quantity').value;
     //    create an object of all details and add them to cart array
@@ -144,24 +199,26 @@ function addToCart() {
             selectedsize
 
         };
-        
+
         let cart = [];
         let previouscart = getcartitems();
-        if (previouscart.length>0) {
-            let productIndex=getproductindexfromcart(previouscart,productname);
-            if(productIndex==-1){
-           
-            cart = [...previouscart, productDetail];
-            }else{
-                cart=[...previouscart]
+        if (previouscart.length > 0) {
+            let productIndex = getproductindexfromcart(previouscart, productname);
+            if (productIndex == -1) {
+
+                cart = [...previouscart, productDetail];
+            } else {
+                cart = [...previouscart]
             }
         }
         else {
             cart = [productDetail];
         }
         localStorage.setItem('cart', JSON.stringify(cart));
-        window.location = './cart.html';
-    
+        // window.location = './cart.html';
+        shownotification(productname, 'has been added to cart', true);
+        getTotalcartItemNumber(true);
+
     }
     else {
         alert("please select the size and quantity");
@@ -181,20 +238,21 @@ function togglesizeclass(box) {
 //  produce the dynamic data into product1.html page
 
 function generateProducts() {
+    onload = true
     getTotalcartItemNumber();
-    
+
     let productContainer = document.getElementById("products-container");
     let elem = '';
-    
+
     products.forEach((product, index) => {
         const { image, name, price, description } = product;
-       
+
         elem += `<div class="col col-md-4 col-xl-4" id="product-${index}" >`
         elem += `<div class="col product-container">`
         elem += `<div class="overlay transition"></div>`
         elem += `<div class="icons-container d-flex flex-column transition">`
         elem += ` <i class="far fa-eye eyeIcon p-3" onclick="saveproducts('${name}','${price}','${image}','${description}')"></i>`
-        elem += `<i class="fas fa-heart heartIcon p-3 ${(inWishlist(name) != -1) ? 'like-btn-active' : ''}" onclick="addTowishlist('${name}','${price}','${image}','${description}')" ></i>`
+        elem += `<i class="fas fa-heart heartIcon p-3 ${(inWishlist(name) != -1) ? 'like-btn-active' : ''}" onclick="addTowishlist('${name}','${price}','${image}','${description}',true)" ></i>`
         elem += `</div>`
         elem += `<img src="${image}" alt="">`
 
@@ -210,51 +268,84 @@ function generateProducts() {
 
 }
 // wishlistfunction
-function checkwishlist(name){
-    
+function checkwishlist(name) {
+
     const { productname, productimage, productprice, productdescription } = getproductdetailsfromsessionstorage();
-    let wishlisticon=document.getElementById("icon-container-heart")
-    if(inWishlist(name)!=-1){
-       
-        wishlisticon.innerHTML=` <i class="fas fa-heart fs-5 " style="color: #f00" onclick="addTowishlist('${productname}','${productprice}','${productimage}','${productdescription}')"></i>`
-    }else{
-        wishlisticon.innerHTML=` <i class="fas fa-heart fs-5 " style="color: #f00" onclick="addTowishlist('${productname}'${productprice}','${productimage}','${productdescription}')"></i>`
-      
+    let wishlisticon = document.getElementById("icon-container-heart")
+    if (inWishlist(name) != -1) {
+        if (wishlisticon)
+            wishlisticon.innerHTML = ` <i class="fas fa-heart fs-5 "  onclick="addTowishlist('${productname}','${productprice}','${productimage}','${productdescription}',false)" style="color:#f00";cursor:pointer"></i>`;
+        if (onload) {
+            shownotification(name, "has been added from wishlist", true)
+
+        } else {
+            onload = true;
+
+        }
+
+    } else {
+        // debugger;
+        if (onload) {
+            shownotification(name, "has been removed from wishlist", false)
+
+        } else {
+            onload = true;
+        }
+        if (wishlisticon)
+            wishlisticon.innerHTML = ` <i class="fas fa-heart fs-5 " style="cursor:pointer" onclick="addTowishlist('${productname}','${productprice}','${productimage}','${productdescription}',false)"></i>`
+
     }
 }
-function inWishlist(name){
-    let wishlist=getwishlistitems();
-    return getproductindexfromwishlist(wishlist,name)
-    
+function inWishlist(name) {
+    let wishlist = getwishlistitems();
+    return getproductindexfromwishlist(wishlist, name)
+
 
 
 }
-function addTowishlist(name,price, image, description){
-    
-    
-    let productIndex=inWishlist(name);
-    let wishlist=getwishlistitems()
+function addTowishlist(name, price, image, description, listProducts) {
+
+
+    let productIndex = inWishlist(name);
+    let wishlist = getwishlistitems()
     const productDetail = {
-        productname:name,
-        productprice:price,
-        productimage:image,
-        productdescription:description,
-      
+        productname: name,
+        productprice: price,
+        productimage: image,
+        productdescription: description,
+
 
     };
-    if(productIndex==-1){
-    wishlist=[...wishlist,productDetail]
-    }else{
-           wishlist.splice(productIndex,1)
+    if (productIndex == -1) {
+        wishlist = [...wishlist, productDetail]
+    } else {
+        wishlist.splice(productIndex, 1)
     }
-    localStorage.setItem('wishlist',JSON.stringify(wishlist));
-    generateProducts();
-    
-    
-    
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    // debugger;
+    checkwishlist(name);
+
+    if (listProducts)
+        generateProducts();
+
+
+
 }
-function setwishlisttolocalstorage(wishlist){
-    localStorage.setItem('wishlist',JSON.stringify(wishlist));
+function shownotification(name, message, success, error, warning) {
+
+    notificationInfocontainer.innerHTML = `<strong>${name}</strong> ${message}`;
+    notificationInfocontainer.style.color = success ? "#28a745" : "#f00"
+    notificationcontainer.style.opacity = '1';
+    setTimeout(() => {
+        closenotification();
+    }, 5000);
+
+}
+function closenotification() {
+    notificationcontainer.style.opacity = '0';
+}
+function setwishlisttolocalstorage(wishlist) {
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
 }
 function getproductindexfromwishlist(wishlist, productname) {
     return wishlist.findIndex((wl) => {
@@ -262,7 +353,7 @@ function getproductindexfromwishlist(wishlist, productname) {
     })
 }
 function getwishlistitems() {
-    
+
     let wishlist = localStorage?.getItem('wishlist');
     if (wishlist) {
         return JSON.parse(wishlist);
@@ -286,11 +377,11 @@ function saveproducts(name, price, image, description) {
 //    FUNCTIONALITY FOR PRODUCTDETAILS PAGE
 // get the content from local storage and set into productdetails1.html page
 function loadproductdetails() {
-    
+
     generateSizeListBoxes();
     getTotalcartItemNumber();
     // reterive the data from local storage
-    
+
     const productname = localStorage?.getItem("productname");
     const productprice = localStorage?.getItem("productprice");
     const productimage = localStorage?.getItem("productimage");
@@ -364,9 +455,9 @@ function getproductdetailsfromsessionstorage() {
 
 // }
 //  FUCNCTION TO GETTHE TOTAOL NUMBEROF ITEM IN CART TO POPULATE ON CART ICON OF EVERY PAGE
-function getTotalcartItemNumber() {
-    
-    generateMenus();
+function getTotalcartItemNumber(onlycartnumber) {
+    if (!onlycartnumber)
+        generateMenus();
 
     let cart = localStorage.getItem('cart');
 
@@ -381,6 +472,7 @@ function getTotalcartItemNumber() {
 //  FUNCTION TO POPULATE ITEMS ON CART PAGE
 function populatecart() {
     getTotalcartItemNumber();
+    populateAddress();
 
     let cart = localStorage?.getItem('cart');
     let cartDetailcontainer = document.getElementById("cart-details")
@@ -461,33 +553,33 @@ function getcartitems() {
 }
 //  DOUBT :NEED OF THIS FUNCTION
 
-function updatequnatity(event,box, productname, quantity, productprice) {
+function updatequnatity(event, box, productname, quantity, productprice) {
     // console.log(event);
-    if(event.keyCode==13){
-    if (box.value != "" && box.value != quantity) {
-        let cart = getcartitems();
-        if (cart.length > 0) {
-            let productIndex = getproductindexfromcart(cart, productname);
-            cart[productIndex].quantity = box.value;
-            setcarttolocalstorage(cart);
-            // currenselection=box.id;
-            populatecart();
-            // currenselection.style.width="200px";
+    if (event.keyCode == 13) {
+        if (box.value != "" && box.value != quantity) {
+            let cart = getcartitems();
+            if (cart.length > 0) {
+                let productIndex = getproductindexfromcart(cart, productname);
+                cart[productIndex].quantity = box.value;
+                setcarttolocalstorage(cart);
+                // currenselection=box.id;
+                populatecart();
+                // currenselection.style.width="200px";
+            }
         }
     }
-    }
 }
-function setcarttolocalstorage(cart){
-    localStorage.setItem('cart',JSON.stringify(cart))
+function setcarttolocalstorage(cart) {
+    localStorage.setItem('cart', JSON.stringify(cart))
 }
-function deleteitemfromcart(productname){
-    
- let cart= getcartitems();
- 
-  let productIndex=getproductindexfromcart(cart,productname);
-  cart.splice(productIndex,1);
-  setcarttolocalstorage(cart);
-  populatecart();
+function deleteitemfromcart(productname) {
+
+    let cart = getcartitems();
+
+    let productIndex = getproductindexfromcart(cart, productname);
+    cart.splice(productIndex, 1);
+    setcarttolocalstorage(cart);
+    populatecart();
 
 
 }
@@ -496,3 +588,154 @@ function deleteitemfromcart(productname){
 // ERRORS
 // CLICKING ON HEART ICON ON PRODUCTDETAIL PAGE THEN SYNTAXERROR IS COMING
 // GETTOTALITEMCART FUCTION CALLED IN GENERATEPRODUCT FUNCTION GIVE THE TYPEERROR
+
+//  adreess mangaing section
+function generateFormFieldID(shipping, key) {
+    
+    return shipping ? `shipping-${key}` : `billing-${key}`;
+}
+function getform(shipping) {
+    
+    let elem = '';
+    let fieldsData = [];
+    if (shipping)
+        fieldsData = shippingformfieds.slice();
+
+    else
+        fieldsData = Billingformfieds.slice();
+
+
+    for (const fieldobject of fieldsData) {
+        elem += `<div class="row pt-2 pb-2 bottom-border">`
+        elem += `<div class="col-6 border-right">${fieldobject.name}</div>`
+        elem += `<div class="col-6">`;
+        elem += `<input type="${fieldobject.type}" id="${generateFormFieldID(shipping, fieldobject.key)}"/>`;
+        elem += `</div>`
+        elem += `</div>`;
+
+    }
+
+    return elem;
+}
+
+function populateaddresssection(shipping,checkbox) {
+    
+            
+    let modalTitle = document.getElementById('modal-title');
+    let modalbodycontainer = document.getElementById('modal-body');
+    let modalsavebuttoncontainer = document.getElementById("save-button");
+    modal.show();
+    if (shipping) {
+        modalTitle.innerHTML = 'Shipping Address'
+
+        modalbodycontainer.innerHTML = getform(true);
+        // console.log(getform(true));
+        modalsavebuttoncontainer.innerHTML = "Save shipping Address";
+    } else {
+        let addresscopycontainer = `<span><input type="checkbox"id="uncheckbox" onchange="copyshippingaddress(this)"/>Same as Billing Address</span>`
+        modalTitle.innerHTML = 'Billing Address `'
+        modalbodycontainer.innerHTML = getform();
+        modalsavebuttoncontainer.innerHTML = "Save Billing Address";
+    }
+}
+// save shipping address toloaclstorage
+function saveAddresstolocalstorage(key, value) {
+;
+    localStorage.setItem(key, value);
+}
+
+function getAddressfromlocalstorage(key) {
+;
+    return localStorage.getItem(key);
+}
+
+function saveAddress() {
+    //;
+    let modalsavebuttoncontainer = document.getElementById("save-button");
+    if (modalsavebuttoncontainer.innerHTML == "Save shipping Address") {
+        let fields = shippingformfieds.slice();
+
+        let shippingobject = {};
+        for (const field of fields) {
+            shippingobject[field.key] = document.getElementById(`shipping-${field.key}`).value;
+        }
+
+        modal.hide();
+        saveAddresstolocalstorage('shipping', JSON.stringify(shippingobject))
+
+    }
+    else {
+        let fields = shippingformfieds.slice();
+        let billingobject = {};
+        for (const field of fields) {
+            billingobject[field.key] = document.getElementById(`billing-${field.key}`).value
+        }
+        // console.log(shippingobject);
+        modal.hide();
+        saveAddresstolocalstorage('billing', JSON.stringify(billingobject))
+
+    }
+}
+
+function copyshippingaddress(box) {
+
+    if (box.checked) {
+        let shippingAddress = getAddressfromlocalstorage('shipping');
+        if (shippingAddress) {
+            let billingAddress = JSON.parse(shippingAddress);
+            saveAddresstolocalstorage('billing', shippingAddress);
+        }
+    } else {
+        removeAddressfromlocalstorage('billing')
+    }
+    // box.checked=false;
+    populateAddress();
+}
+function removeAddressfromlocalstorage(key) {
+
+    localStorage.removeItem(key);
+
+}
+
+// populate addresses on screen
+function getAddresslayout(obj, containername, addressname) {
+
+    let addresscontainer = document.getElementById(containername);
+    
+    let elem = '';
+    if (obj) {
+        let addressobject = JSON.parse(obj);
+        
+
+        for (const addresskey of Object.keys(addressobject)) {
+            elem += `<div class="col-6 d-flex justify-content-start align-items-center p-1">${getNameForKey(addresskey)}</div>`;
+            elem += `<div class="col-6 d-flex justify-content-start align-items-center p-1">${addressobject[addresskey]}</div>`;
+            
+        }
+        if(addresscontainer.id=='shipping-table'){
+        elem+=`<div class="d-flex justify-content-end id="edit-button">`
+        elem+=`<button class="col-2 editing-button" onclick="populateaddresssection(true,true)" >Edit</button>`
+         elem+=   `</div>`
+        }
+    } else {
+        elem += `<h2>No address added yet.</h2>`;
+    }
+    addresscontainer.innerHTML = elem;
+}
+function getNameForKey(addresskey) {
+
+    let addressField = shippingformfieds.find((shipAddress) => shipAddress.key === addresskey);
+    return addressField.name;
+}
+
+function populateAddress() {
+
+    
+    let shippingAddress = getAddressfromlocalstorage('shipping');
+    let billingAddress = getAddressfromlocalstorage('billing');
+    getAddresslayout(shippingAddress, 'shipping-table');
+    getAddresslayout(billingAddress, 'billing-table');
+//     if (billingAddress) {
+//    document.getElementById("billing-address-checkbox").setAttribute('checked',true)
+//     }
+}

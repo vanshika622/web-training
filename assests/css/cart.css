@@ -64,3 +64,26 @@
     color: #fff;
     transform: scale(1.1);
 }
+.address-container{
+    padding: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin: 1rem;
+}
+.edit-button{
+    float: right;
+    right: 0;
+    margin-bottom: 2px;
+    
+}
+.editing-button {
+    border:none;
+    outline:none;
+    padding: 5px;
+    width: 30%;
+    background: rgb(110, 110, 238);
+    border-radius: 4px;
+    color: whitesmoke;
+    font-size: 20px;
+    cursor: pointer;
+}
