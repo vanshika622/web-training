@@ -6,19 +6,19 @@
     background: #222;
     color: #fff;
 }
-.dark-grey div{
+.colour div{
     font-size: 15px;
 }
-.dark-grey .top-bar-icon{
+.colour .top-bar-icon{
     font-size: 1.3rem;
     position: relative;
 }
 /* doubt */
-.dark-grey .top-bar-icon span{
+.colour .top-bar-icon span{
    position: absolute;
    font-size: 1rem;
-   right: -35%;
-   top:-60%;
+   right: -55%;
+    top: -17%;
 }
 .breadth   {
     max-width: 861px;

@@ -1,4 +1,6 @@
 
+// Doubt: after loading cart page ,on changing quantity we are not able to updateprice
+// OPEN PAGE FUNCTION NOT WORKING
 const products = [{
     "image": "./assests/imgs/top-1-image.jpg",
     "name": "Canary yellow seahorse blazer",
@@ -44,19 +46,19 @@ const products = [{
 const menus = [
     {
         menuName: 'Home',
-        link: './bootstrapito.html'
+        link: './home.html'
     },
     {
         menuName: 'About',
-        link: './'
+        link: './about.html'
     },
     {
         menuName: 'Services',
-        link: './'
+        link: './service.html'
     },
     {
         menuName: 'Contact',
-        link: './'
+        link: './contact.html'
     },
     {
         menuName: 'Shop',
@@ -70,6 +72,10 @@ const menus = [
                 {
                     menuName: 'Showcase',
                     link: './'
+                },
+                {
+                    menuName:'My Orders',
+                    link: './orders.html'
                 }
             ]
     }
@@ -79,6 +85,7 @@ const sizeList = ['XS', 'S', 'M', 'L', 'XL'];
 let selectedsize = "";
 let notificationcontainer = document.getElementById("notification-container")
 let notificationInfocontainer = document.getElementById("info-container")
+let pageContentContainer = document.getElementById("page-content-container");
 let onload = false;
 let modal = new bootstrap.Modal(document.getElementById('myModal'));
 let shippingformfieds = [
@@ -128,14 +135,16 @@ let Billingformfieds = [
 
 ]
 
+let placeOrder=false;
+
 function generatesubmenu(submenuItem) {
     var elem = '';
     for (const submenu of submenuItem) {
 
-        elem += `  <li><a class="dropdown-item" href="${submenu.link}">${submenu.menuName}</a></li>`
+        elem += `<li><a class="dropdown-item" href="${submenu.link}">${submenu.menuName}</a></li>`;
 
 
-        elem += ` </li>`
+        
     }
     return elem;
 
@@ -148,7 +157,7 @@ function generateMenus() {
     for (const menu of menus) {
         if (menu.dropdown) {
             elem += ` <li class="nav-item dropdown">`
-            elem += `  <a class="nav-link dropdown-toggle m-4" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            elem += `  <a href="${menu.link}" class="nav-link dropdown-toggle m-4"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             ${menu.menuName}`
             elem += ` </a>`
             elem += ` <ul class="dropdown-menu" aria-labelledby="navbarDropdown">`
@@ -158,7 +167,7 @@ function generateMenus() {
         }
         else {
             elem += `<li class="nav-item m-4" ${i == 0 ? 'active' : ''}>`
-            elem += ` <a class="nav-link active" aria-current="page" href="${menu.link}">${menu.menuName}</a>`
+            elem += ` <a href="${menu.link}" class="nav-link active" aria-current="page">${menu.menuName}</a>`
             elem += ` </li>`
 
         }
@@ -166,7 +175,19 @@ function generateMenus() {
     }
     menucontainer.innerHTML = elem;
 }
-
+// function openpage(pagename){
+//     if(pagename){
+//         $(pageContentContainer).stop().animate({
+//                 opacity:'0'
+//         },500,function(){
+//             $(this).load(`${pagename}.html`).stop().animate({
+//                 opacity:'1'
+//             },500)
+//         })
+//     }else{
+//         $(pageContentContainer).load('home.html')
+//     }
+// }
 
 // generate size boxes dynamically into productdetail1.html
 function generateSizeListBoxes(sizeName) {
@@ -456,6 +477,7 @@ function getproductdetailsfromsessionstorage() {
 // }
 //  FUCNCTION TO GETTHE TOTAOL NUMBEROF ITEM IN CART TO POPULATE ON CART ICON OF EVERY PAGE
 function getTotalcartItemNumber(onlycartnumber) {
+    // openpage();
     if (!onlycartnumber)
         generateMenus();
 
@@ -474,45 +496,18 @@ function populatecart() {
     getTotalcartItemNumber();
     populateAddress();
 
-    let cart = localStorage?.getItem('cart');
+    let cart = getcartitems();
     let cartDetailcontainer = document.getElementById("cart-details")
     let totalamountcontainer = document.getElementById("total-amount")
     let subtotalamountcontainer = document.getElementById("subtotal-amount")
-    let total = 0;
+    
 
-    let elem = "";
-    if (cart) {
-
-        cart = JSON.parse(cart);
+    
+    
+       let[total,elem]=renderDesign(0,true,cart)
+        
         if (cart.length > 0) {
-            for (const product of cart) {
-                // console.log(product);
-                let subtotal = +product.productprice * product.quantity;
-                total = total + subtotal;
-                elem += `<div class="row pt-1 pb-1">`
-                elem += `<div class="col-6">`
-                elem += `<div class="row align-items-center">`
-                elem += ` <div class="col-1 pt-2" onclick ="deleteitemfromcart('${product.productname}')">X</div>`
-                elem += `<div class="col-2"> <img src="${product.productimage}" alt=""width="50%" class="img-responsive">`
-                elem += `</div>`
-                elem += `<div class="col-9 text-left">`
-                elem += `${product.productname}`
-                elem += ` </div>`
-                elem += `</div>`
-                elem += ` </div>`
-                elem += `<div class="col-6">`
-                elem += ` <div class="row justify-content-start align-items-center align-items-center">`
-                elem += `<div class="col-4">${product.productprice}</div>`
-                elem += `<div class="col-4 d-flex justify-content-start align-items-center">`
-                elem += `<input type="number" id="${product.productname}"   onkeydown="updatequnatity(event,this,'${product.productname}','${product.quantity}','${product.productprice}')" value="${product.quantity}" class="cart-quantity-box">`
-                elem += ` </div>`
-                elem += `<div class="col-4">${subtotal}</div>`
-                elem += ` </div>`
-                elem += ` </div>`
-
-                elem += ` </div>`
-                elem += `<hr>`
-            }
+            
             subtotalamountcontainer.innerHTML = total;
             totalamountcontainer.innerHTML = total;
             cartDetailcontainer.innerHTML = elem;
@@ -523,7 +518,47 @@ function populatecart() {
         else {
             window.location = './products1.html';
         }
+    
+}
+function renderDesign(total,cart,arr){
+
+   
+    let elem='';
+    for (const product of arr) {
+        // console.log(product);
+        let subtotal = +product.productprice * product.quantity;
+        total = total + subtotal;
+        elem += `<div class="row pt-1 pb-1">`
+        elem += `<div class="col-6">`
+        elem += `<div class="row align-items-center">`
+        if(cart)
+             elem += ` <div class="col-1 pt-2" onclick ="deleteitemfromcart('${product.productname}')">X</div>`
+        elem += `<div class="col-2">`
+        elem+=` <img src="${product.productimage}"width="50%">`
+        elem += `</div>`
+        elem += `<div class="col-9 text-left">`
+        elem += `${product.productname}`
+        elem += ` </div>`
+        elem += `</div>`
+        elem += ` </div>`
+        elem += `<div class="col-6">`
+        elem += ` <div class="row justify-content-start align-items-center align-items-center">`
+        elem += `<div class="col-4">${product.productprice}</div>`
+        elem += `<div class="col-4 d-flex justify-content-start align-items-center">`
+        if(cart)
+           elem += `<input type="number" id="${product.productname}"   onkeyup="updatequnatity(event,this,'${product.productname}','${product.quantity}','${product.productprice}')" value="${product.quantity}" class="cart-quantity-box">`
+        else
+           elem+=product.quantity;   
+        elem += ` </div>`
+        elem += `<div class="col-4 text-center">₹ ${subtotal}</div>`
+        elem += ` </div>`
+        elem += ` </div>`
+
+        elem += ` </div>`
+        elem += `<hr>`
     }
+    return [total,elem];
+
 }
 
 //  FUNCTION TO DELETE ITEM FROM A CART PAGE
@@ -551,9 +586,9 @@ function getcartitems() {
     }
     return [];
 }
-//  DOUBT :NEED OF THIS FUNCTION
 
-function updatequnatity(event, box, productname, quantity, productprice) {
+
+function updatequnatity(event,box, productname, quantity, productprice) {
     // console.log(event);
     if (event.keyCode == 13) {
         if (box.value != "" && box.value != quantity) {
@@ -585,9 +620,7 @@ function deleteitemfromcart(productname) {
 }
 
 
-// ERRORS
-// CLICKING ON HEART ICON ON PRODUCTDETAIL PAGE THEN SYNTAXERROR IS COMING
-// GETTOTALITEMCART FUCTION CALLED IN GENERATEPRODUCT FUNCTION GIVE THE TYPEERROR
+
 
 //  adreess mangaing section
 function generateFormFieldID(shipping, key) {
@@ -598,18 +631,25 @@ function getform(shipping) {
     
     let elem = '';
     let fieldsData = [];
-    if (shipping)
+    let addressdetails=[];
+    if (shipping){
         fieldsData = shippingformfieds.slice();
+       addressdetails = getAddressfromlocalstorage("shipping");
+        
+    }
 
-    else
+    else{
         fieldsData = Billingformfieds.slice();
+        addressdetails=getAddressfromlocalstorage('billing');
 
 
+    }
+            addressdetails=JSON.parse(addressdetails);
     for (const fieldobject of fieldsData) {
         elem += `<div class="row pt-2 pb-2 bottom-border">`
         elem += `<div class="col-6 border-right">${fieldobject.name}</div>`
         elem += `<div class="col-6">`;
-        elem += `<input type="${fieldobject.type}" id="${generateFormFieldID(shipping, fieldobject.key)}"/>`;
+        elem += `<input type="${fieldobject.type}" value="${rendervalue(fieldobject.key,addressdetails)}" id="${generateFormFieldID(shipping, fieldobject.key)}"/>`;
         elem += `</div>`
         elem += `</div>`;
 
@@ -617,26 +657,45 @@ function getform(shipping) {
 
     return elem;
 }
+function rendervalue(key,addressdetails){
+    
+    
+    if(addressdetails)
+      return addressdetails[key];
 
-function populateaddresssection(shipping,checkbox) {
+      return '';
+}
+
+function populateaddresssection(shipping,paymentpage) {
     
             
     let modalTitle = document.getElementById('modal-title');
     let modalbodycontainer = document.getElementById('modal-body');
     let modalsavebuttoncontainer = document.getElementById("save-button");
-    modal.show();
-    if (shipping) {
-        modalTitle.innerHTML = 'Shipping Address'
-
-        modalbodycontainer.innerHTML = getform(true);
-        // console.log(getform(true));
-        modalsavebuttoncontainer.innerHTML = "Save shipping Address";
-    } else {
-        let addresscopycontainer = `<span><input type="checkbox"id="uncheckbox" onchange="copyshippingaddress(this)"/>Same as Billing Address</span>`
-        modalTitle.innerHTML = 'Billing Address `'
-        modalbodycontainer.innerHTML = getform();
-        modalsavebuttoncontainer.innerHTML = "Save Billing Address";
+    
+    if(paymentpage){
+        // debugger;
+          $.get("./payment-page.html",function(res){
+            modalTitle.innerHTML = 'Enter Card Details';
+            modalbodycontainer.innerHTML = res;
+            modalsavebuttoncontainer.innerHTML = "Place Order";
+            placeOrder = true;
+            // console.log(res);
+          });
+    }else{
+        if (shipping) {
+            modalTitle.innerHTML = 'Shipping Address';
+            modalbodycontainer.innerHTML = getform(true);
+            modalsavebuttoncontainer.innerHTML = "Save Shipping Address";
+        } else {
+            let addresscopycontainer = `<span><input type="checkbox"id="uncheckbox" onchange="copyshippingaddress(this)"/>Same as Billing Address</span>`
+            modalTitle.innerHTML = 'Billing Address `'
+            modalbodycontainer.innerHTML = getform();
+            modalsavebuttoncontainer.innerHTML = "Save Billing Address";
+        }
     }
+    modal.show();
+    
 }
 // save shipping address toloaclstorage
 function saveAddresstolocalstorage(key, value) {
@@ -649,10 +708,22 @@ function getAddressfromlocalstorage(key) {
     return localStorage.getItem(key);
 }
 
-function saveAddress() {
+function saveinfo() {
     //;
     let modalsavebuttoncontainer = document.getElementById("save-button");
-    if (modalsavebuttoncontainer.innerHTML == "Save shipping Address") {
+    if(modalsavebuttoncontainer.innerHTML=="Place Order"){
+        let cardnumbercontainer=document.getElementById("CardNumber")
+        let cardExpirycontainer=document.getElementById("cardexpiry")
+        let cardCVVcontainer=document.getElementById("CVV")
+        let cardobject={
+            cardnumber:  cardnumbercontainer.value,
+            cardexpiry:cardExpirycontainer.value,
+            cardCVV:cardCVVcontainer.value
+        }
+        savecardinfo(cardobject);
+       saveorder();
+    }
+   else if (modalsavebuttoncontainer.innerHTML == "Save shipping Address") {
         let fields = shippingformfieds.slice();
 
         let shippingobject = {};
@@ -665,9 +736,11 @@ function saveAddress() {
 
     }
     else {
+        debugger;
         let fields = shippingformfieds.slice();
         let billingobject = {};
         for (const field of fields) {
+            console.log(field.key)
             billingobject[field.key] = document.getElementById(`billing-${field.key}`).value
         }
         // console.log(shippingobject);
@@ -675,6 +748,36 @@ function saveAddress() {
         saveAddresstolocalstorage('billing', JSON.stringify(billingobject))
 
     }
+    populateAddress();
+}
+function savecardinfo(cardobject){
+    localStorage.setItem('card',JSON.stringify(cardobject));
+}
+function saveorder(){
+    let cart = getcartitems();
+    let orders = getOrders();
+    let products = [];
+    if (orders.products && orders.products.length > 0) {
+        products = [...orders.products, ...cart];
+    } else {
+        products = [...cart];
+    }
+    orders = {
+        "products": products,
+        "billingAddress": getAddressfromlocalstorage('billing'),
+        "shippingAddress": getAddressfromlocalstorage('shipping')
+    };
+    localStorage.clear();
+    saveordertoLocalstorage(orders);
+    window.location = './orders.html';
+}
+
+
+
+
+function openpaymentcart(){
+ modal.show();   
+ 
 }
 
 function copyshippingaddress(box) {
@@ -699,6 +802,7 @@ function removeAddressfromlocalstorage(key) {
 
 // populate addresses on screen
 function getAddresslayout(obj, containername, addressname) {
+    let addresstype=containername.split('-')[0];
 
     let addresscontainer = document.getElementById(containername);
     
@@ -712,14 +816,13 @@ function getAddresslayout(obj, containername, addressname) {
             elem += `<div class="col-6 d-flex justify-content-start align-items-center p-1">${addressobject[addresskey]}</div>`;
             
         }
-        if(addresscontainer.id=='shipping-table'){
-        elem+=`<div class="d-flex justify-content-end id="edit-button">`
-        elem+=`<button class="col-2 editing-button" onclick="populateaddresssection(true,true)" >Edit</button>`
-         elem+=   `</div>`
-        }
+        
     } else {
         elem += `<h2>No address added yet.</h2>`;
     }
+    elem+=`<div class="col d-flex justify-content-end id="edit-button">`
+        elem+=`<button type="button"class="btn btn-primary" onclick="populateaddresssection(${addresstype=="shipping"?true: false})" >Edit Address</button>`
+         elem+=   `</div>`
     addresscontainer.innerHTML = elem;
 }
 function getNameForKey(addresskey) {
@@ -738,4 +841,33 @@ function populateAddress() {
 //     if (billingAddress) {
 //    document.getElementById("billing-address-checkbox").setAttribute('checked',true)
 //     }
+}
+
+
+// order page
+function getOrders() {
+    let orders = localStorage.getItem('orders');
+    if (orders)
+        return JSON.parse(orders);
+    return {};
+}
+function saveordertoLocalstorage(orders){
+   localStorage.setItem('orders',JSON.stringify(orders))
+}
+function fetchOrders() {
+    console.log("heyy")
+    generateMenus();
+    getTotalcartItemNumber();
+    const orders = getOrders() ;
+    // let cartDetailContainer = document.getElementById("cart-details");
+    // let totalAmountContainer = document.getElementById("total-amount");
+    // let subTotalAmountContainer = document.getElementById("subtotal-amount");
+    console.log(orders.products);
+    let ordersContainer = document.getElementById('orders-container');
+    let totalAmount = document.getElementById("totalAmount");
+    if (orders.products &&orders.products.length > 0) {
+        let [total, elem] = renderDesign(0, false, orders.products);
+        totalAmount.innerHTML = total;
+        ordersContainer.innerHTML = elem;
+    }
 }

@@ -1,0 +1,131 @@
+.colour{
+    background: #222;
+    color: #fff;
+}
+.colour div{
+    font-size: 15px;
+}
+.colour .top-bar-icon{
+    font-size: 1.3rem;
+    position: relative;
+}
+/* doubt */
+ .colour .top-bar-icon span{
+   position: absolute;
+   font-size: 1rem;
+   right: -60%;
+   top:-33%;
+}
+.input-icons i {
+    position: absolute;
+}
+  
+.input-icons {
+    width: 100%;
+    /* margin-bottom: 10px; */
+}
+.icon {
+    padding: 10px;
+    min-width: 40px;
+}
+  .formdesign{
+      height: 35px;
+  }
+  .cartheading{
+      margin-top: 20px;
+      /* justify-content: center; */
+      /* box-shadow: 2px 2px 1px rgb(184, 183, 183); */
+      font-size: 20px;
+      font-weight: 400;
+  }
+  hr{
+      margin-top: 1.5rem;
+      box-shadow: 2px 2px 1px rgb(184, 183, 183);
+  }
+  .detailcontainer{
+      width: 100%;
+      height: auto;
+  }
+.flex-direction{
+    flex-direction: row;
+    row-gap: 10px;
+}
+.quantitycontainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2px;
+}
+.quantitycontainer div{
+    height: 30px;
+    width: 30px;
+    border: 1px solid black;
+    
+    
+
+}
+.offercontainer{
+    flex-wrap: wrap;
+    gap: 5px
+}
+.offercontainer select{
+    width: 18%;
+    margin-left:10px
+}
+.offercontainer button{
+   width: 13%;
+   background: black;
+   color: #fff;
+   text-transform: capitalize;
+   outline: none;
+   border: none;
+   border-radius: 3px;
+   padding: 10px;
+}
+
+.carttable{
+    width: 50%;
+    border: 5px black;
+    height: auto;
+}
+.flex-direction-col{
+    flex-direction: column;
+}
+.carttableheading{
+    width: 100%;
+    background: black;
+    color: white;
+    padding: 10px;
+}
+.carttablebody{
+    width: 100%;
+    border: 2px  grey;
+    
+     /* background: black; */
+     border: 5px purple;
+}
+.subtotalblock, .shippingblock, .totalblock,.checkoutblock{
+    border: 2px grey;
+    padding: 10px;
+}
+
+.subtotalblock div ,.shippingblock div, .totalblock div{
+    width: 50%;
+    /* margin-left: 20px; */
+}
+.checkoutblock{
+    
+    align-items: center;
+}
+.block{
+    width: 40%;
+    background: #222;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 10px;
+    border-radius: 5px ;
+    font-size: 20px;
+    font-weight: lighter;
+    
+}
+

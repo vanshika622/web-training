@@ -4,44 +4,81 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./assests/css/style.css">
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
-<body>
-<div class="container">
-    <header>
-    <div class="row top-bar-container d-flex justify-content-space-between">
-        <div class="button-top-bar d-flex  justify-content-space-between align-items-center gap-1 ">
-            <div class="button-primary d-flex
-            justify-content-center align-items-center">Login</div>
-            <div class="button-primary d-flex justify-content-center align-items-center">Register</div>
-            
-            
+<body onload="populateItem()">
+    <div class="container">
+        <div class="row header"></div>
+        <div class="row">
+            <div class="input-container">
+                <div>
+                    <select name="items" id="items" onchange="checkforAddbutton()">
+                                                                                  
+                    </select>
+
+                </div>
+                <div>
+                    <input type="number" id="quantity" placeholder="e.g. 5">
+
+                     
+                </div>
+                <div>
+                    <button id="display" class="addbutton inactive" onclick="addToCart()">Add</button>
+
+                </div>
+            </div>
         </div>
-        <div class="social-media-icons-container d-flex justify-content-center align-items-center ">
-            <div class="icon facebook"></div>
-            <div class="icon instagram"></div>
-            <div class="icon twitter"></div>
-            
+        <!-- input container row end here -->
+                 <!-- table container starts here -->
+        <div class="row">
+        <div class="table-container">
+            <div class="row items-row items-heading">
+                <div>Item Name</div>
+                <div>Item Quantity</div>
+                <div>Price</div>
+                <div>Row Total</div>
+            </div>
+            <div class="row items-row ">
+                <div>Pizza</div>
+                <div>10</div>
+                <div>150</div>
+                <div>1500</div>
+            </div>
+            <div class="row items-row ">
+                <div>Pizza</div>
+                <div>10</div>
+                <div>150</div>
+                <div>1500</div>
+            </div>
+            <div class="row items-row ">
+                <div>Pizza</div>
+                <div>10</div>
+                <div>150</div>
+                <div>1500</div>
+            </div>
+        </div>
+        </div>
+        <div class="row detail-container">
+            <div class="row total">
+                <div>Total :- </div>
+                <div>100</div>
+            </div>
+            <div class="row state-gst">
+                <div>State GST (2.5%):-</div> 
+                <div>2.5</div> 
+            </div>
+            <div class="row center-gst">
+               <div>Center GST (2.5%):-</div> 
+                <div>2.5</div>
+            </div>
+            <div class="row grand-total">
+                <div>Grand Total :-</div>
+                <div>105</div>
+            </div>
         </div>
     </div>
     
-        <div class="row d-flex justify-content-space-between align-items-center gap-1 header-row-2 box-shadow-down" >
-                <div class="logo">
-                   
-                </div>
-                <div class="menu d-flex justify-content-space-between  flex-start  gap-1 align-items-center">
-                    <div>Home</div>
-                    <div>Brand Journey</div>
-                    <div>Shop</div>
-                    <div>Blog</div>
-                    <div>FS celebrities</div>
-                </div>
-                <div class="search d-flex justify-content-center align-items-center">
-                    <input type="text" >
-                </div>
-        </div>
-    </header>
-</div>
+    <script src="order.js"></script>
 </body>
 </html>
