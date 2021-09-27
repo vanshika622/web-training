@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,10 +8,11 @@
     <title>Product page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="stylesheet" href="./assests/css/bootstrapintro.css">
+    <link rel="stylesheet" href="./assets/css/bootstrapintro.css">
     <!-- JavaScript Bundle with Popper -->
-    
+
 </head>
+
 <body onload="generateProducts()">
   <div class="notification-container" id="notification-container">
     <div class="close-button"  onclick="closenotification()">X</div>
@@ -18,20 +20,35 @@
   </div>
     <div class="container-fluid">
         <div class="row colour">
-          <div class="container">
-            <div class="row justify-content-center">
-              <div class="col-10">
-                <div class="row">
-                  <div class="col-lg-5 col-md-5 col-sm-12">
-                    Avail 10% Off on Your first Purchase. Use Code: FS10
-                  </div>
-                  <div class="col-7">
-                    <div class="row">
-                      <div class="col-lg-4 col-md-6 ">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-10">
                         <div class="row">
-                          <div class="col-5 d-flex justify-content-center align-items-center">Login</div>
-                          <div class="col-5 d-flex justify-content-center align-items-center">Register</div>
+                            <div class="col-lg-5 col-md-5 col-sm-12">
+                                Avail 10% Off on Your first Purchase. Use Code: FS10
+                            </div>
+                            <div class="col-7">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 ">
+                                        <div class="row">
+                                            <div class="col-5 d-flex justify-content-center align-items-center">Login</div>
+                                            <div class="col-5 d-flex justify-content-center align-items-center">Register</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8 col-md-6 ">
+                                        <div class="row justify-content-end">
+                                            <!-- doubt why we use span tag here -->
+                                            <div class="col-2  "><i class="fas fa-heart top-bar-icon"> <span>0</span></i></div>
+                                            <div class="col-2 "><i class="fas fa-shopping-bag top-bar-icon"><span id="cart-item-total">0</span></i></div>
+                                            <div class="col-2 ">IND</div>
+                                            <div class="col-2 ">US</div>
+                                            <div class="col-2 ">UAF</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+<<<<<<< HEAD
                       </div>
                       <div class="col-lg-8 col-md-6 ">
                         <div class="row justify-content-end">
@@ -43,70 +60,76 @@
                           <div class="col-2 ">UAF</div>
                         </div>
                       </div>
+=======
+>>>>>>> 3fbd458a46f25f5bffc3040d6b85b41c5d917cb3
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
         <!-- nav bar -->
         <div class="row ">
-          <nav class="navbar navbar-expand-lg navbar-light bg-light nav-bar-props">
-            <div class="col-lg-2  px-1 mx-4">
-              <a class="navbar-brand" href="./"><a class="navbar-brand" href="#">
-                  <img src="./assests/imgs/logo.png" alt="" width="100" height="70">
-                </a>
-            </div>
-    
-    
-            <div class="collapse navbar-collapse d-flex col-8 justify-content-start" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0 my-navbar d-flex justify-content-between " id="menu-container">
-                
-              </ul>
-    
-            </div>
-            <div class="col-2">
-              <div class="col-2" id="search-icon">
-                <i class="fas fa-search icon"></i>
-              </div>
-              <form class="form-inline my-2 my-lg-0" id="search-bar">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              </form>
-            </div>
-          </nav>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light nav-bar-props">
+                <div class="col-lg-2  px-1 mx-4">
+                    <a class="navbar-brand" href="./">
+                        <a class="navbar-brand" href="#">
+                            <img src="./assets/imgs/logo.png" alt="" width="100" height="70">
+                        </a>
+                </div>
+
+
+                <div class="collapse navbar-collapse d-flex col-8 justify-content-start" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 my-navbar d-flex justify-content-between " id="menu-container">
+
+                    </ul>
+
+                </div>
+                <div class="col-2">
+                    <div class="col-2" id="search-icon">
+                        <i class="fas fa-search icon"></i>
+                    </div>
+                    <form class="form-inline my-2 my-lg-0" id="search-bar">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    </form>
+                </div>
+            </nav>
         </div>
 
-<!--   product container -->
-    <div class="conatiner-fluid">
-        <div class="row d-flex justify-content-between">
-           <div class="col-2">
-               <div class="row">
-                   <div class="mt-5 ps-5 pt-5">
-                       <h2>SHOP</h2>
-                       <div class="col category-bar p-2">RESET.RESTART</div>
-                       <div class="col category-bar p-2">TALES FROM THE DEEP</div>
-                       <div class="col category-bar p-2">MEGALPOLIS</div>
-                       <div class="col category-bar p-2">SEAHORSE SERENADE</div>
-                       <div class="col category-bar p-2">HALYCON DAYS OF SPRING</div>
-                       <div class="col category-bar p-2">FLAMBOYANCE OF FLAMINGOS</div>
-                       <div class="col category-bar p-2">OCCASSION WEAR</div>
-                       <div class="col category-bar p-2">MASKS</div>
-                       <div class="col category-bar p-2">CHANDELER CHIC</div>
-                       <div class="col category-bar">BEST SELLERS</div>
-                   </div>
-               </div>
-           </div>
-           <div class="col-9">
-            <div class="row gy-4 py-5" id="products-container">
-                        
-            </div>
-           </div>
-        </div>
-    </div>
-   
+        <!--   product container -->
+        <div class="conatiner-fluid">
+            <div class="row d-flex justify-content-between">
+                <div class="col-2">
+                    <div class="row">
+                        <div class="mt-5 ps-5 pt-5">
+                            <h2>SHOP</h2>
+                            <div class="col category-bar p-2">RESET.RESTART</div>
+                            <div class="col category-bar p-2">TALES FROM THE DEEP</div>
+                            <div class="col category-bar p-2">MEGALPOLIS</div>
+                            <div class="col category-bar p-2">SEAHORSE SERENADE</div>
+                            <div class="col category-bar p-2">HALYCON DAYS OF SPRING</div>
+                            <div class="col category-bar p-2">FLAMBOYANCE OF FLAMINGOS</div>
+                            <div class="col category-bar p-2">OCCASSION WEAR</div>
+                            <div class="col category-bar p-2">MASKS</div>
+                            <div class="col category-bar p-2">CHANDELER CHIC</div>
+                            <div class="col category-bar">BEST SELLERS</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div class="row gy-4 py-5" id="products-container">
 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<<<<<<< HEAD
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="./assests/js/scriptS.js"></script>
+=======
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+        <script src="./assets/js/scripts.js"></script>
+>>>>>>> 3fbd458a46f25f5bffc3040d6b85b41c5d917cb3
 </body>
+
 </html>
