@@ -1,0 +1,15 @@
+img{
+    max-width: 80%;
+}
+body{
+    background: rgb(244, 244, 244);
+}
+.image-container{
+    /* gap:1rem; */
+    gap:1rem;
+    
+}
+.image-container>div.col{
+    background: #fff;
+    box-shadow: 0px 0px 10px #888;
+}
